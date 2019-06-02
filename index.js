@@ -18,8 +18,21 @@ app.get('/', (request, response) => {
 app.get('/admins', db.getAdmins)
 app.get('/admins/:id', db.getAdminById)
 app.post('/admins', db.createAdmin)
-//app.put('/users/:id', db.updateUser)
 app.delete('/admins/:id', db.deleteAdmin)
+
+
+app.get('/projets', db.getProjects)
+app.get('/projets/:id', db.getProjectById)
+app.post('/projects', db.createProject)
+
+app.get('/groups', db.getGroups)
+app.get('/groups/:id', db.getGroupById)
+app.post('/group', db.createGroup)
+
+
+
+
+
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`)
