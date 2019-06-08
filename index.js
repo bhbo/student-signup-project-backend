@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 const db = require('./queries')
-const port = 3000
+const port = 8000
 
 app.use(bodyParser.json())
 app.use(
@@ -21,13 +21,19 @@ app.post('/admins', db.createAdmin)
 app.delete('/admins/:id', db.deleteAdmin)
 
 
-app.get('/projets', db.getProjects)
-app.get('/projets/:id', db.getProjectById)
+app.get('/projects', db.getProjects)
+app.get('/projects/:id', db.getProjectById)
 app.post('/projects', db.createProject)
 
-app.get('/groups', db.getGroups)
-app.get('/groups/:id', db.getGroupById)
-app.post('/group', db.createGroup)
+
+//app.get('/groups', db.getGroups)
+//app.get('/groups/:id', db.getGroupById)
+
+app.get('/students', db.getStudents)
+
+//app.get('/group_pref', db.getGroupPref)
+
+//app.post('/group', db.createGroup)
 
 
 
