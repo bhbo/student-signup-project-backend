@@ -26,12 +26,12 @@ app.get('/projects/:id', db.getProjectById)
 app.post('/projects', db.createProject)
 
 
-//app.get('/groups', db.getGroups)
-//app.get('/groups/:id', db.getGroupById)
+app.get('/groups', db.getGroups)
+app.get('/groups/:id', db.getGroupById)
 
 app.get('/students', db.getStudents)
 
-//app.get('/group_pref', db.getGroupPref)
+app.get('/group_pref', db.getGroupPref)
 
 //app.post('/group', db.createGroup)
 
