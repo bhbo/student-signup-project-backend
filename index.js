@@ -33,7 +33,7 @@ app.get('/students', db.getStudents)
 
 app.get('/group_pref', db.getGroupPref)
 
-//app.post('/group', db.createGroup)
+app.post('/group', db.createGroup)
 
 
 

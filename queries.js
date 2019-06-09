@@ -6,6 +6,7 @@ const pool = new Pool({
   password: 'password',
   port: 5432,
 })
+var groupId
 
 
 const getGroupPref = (request, response) => {
@@ -124,6 +125,94 @@ const getAdmins = (request, response) => {
     })
   }
 
+  const createGroup = (request, response) => { 
+    const {student_id1, student_id2, student_id3, first_name1, first_name2, first_name3, 
+      last_name1, last_name2, last_name3, email1, email2, email3, choice1,choice2,choice3} = request.body
+
+    const column_name = ["student_id", "first_name", "last_name", "email"] 
+
+    for(var i=1;i<=3;i++){
+
+      pool.query('INSERT INTO students (student_id, first_name, last_name, email) VALUES ($1, $2, $3, $4) RETURNING student_id', 
+        [request.body[column_name[0].concat(i)], request.body[column_name[1].concat(i)], 
+          request.body[column_name[2].concat(i)],request.body[column_name[3].concat(i)]], (error, results) => {
+          if (error) {
+            throw error
+          }  
+          console.log(`Student added with ID: ${results.rows[0].student_id}`)
+        })
+    }
+    //response.status(201).send(`Student added with ID: ${student_id1}, ${student_id2}, ${student_id3}`)
+  
+    pool.query('SELECT MAX(group_id)+1 as max_id FROM groups', function(error, results){
+      if (error) {
+        throw error
+      }
+      
+      if(results.rows[0]["max_id"] === null){
+        results.rows[0]["max_id"] = 1
+      } 
+      addGroup(results.rows[0]["max_id"])
+
+      response.status(200)
+
+    })
+
+    function addGroup(groupId) {
+      for(var i=1;i<=3;i++){
+        pool.query('INSERT INTO groups (group_id, student_id) VALUES ($1, $2) RETURNING *',
+        [groupId, request.body[column_name[0].concat(i)]], function(error, results) {
+          if (error) {
+            throw error
+          }
+          console.log(`Student added with ID: ${results.rows[0].student_id}, added to group: `, groupId)
+        })
+      }
+      //response.status(201).send(`Student added to group: ${student_id1}, ${student_id2}, ${student_id3}`)
+
+      addGroupPreference(groupId)
+    }
+
+    function addGroupPreference(groupId) {
+        pool.query('INSERT INTO group_preference (group_id, choice_1, choice_2, choice_3) VALUES ($1, $2, $3, $4) RETURNING *',
+        [groupId, choice1,choice2,choice3], function(error, results) {
+          if (error) {
+            throw error
+          }
+          console.log(`Choices: ${choice1}, ${choice2}, ${choice3}, added to group: `, groupId)
+        })
+      response.status(201).send(`Student added to group: ${student_id1}, ${student_id2}, ${student_id3}`)
+    }
+  
+    // pool.query('INSERT INTO group (student_id) WHERE EXISTS(select 1 from group where group_id ='+groupId+' ) VALUES (SELECT student_id from student WHERE student_id =$1)',
+    // [student_id2], (error, results) => {
+    //   if (error) {
+    //     throw error
+    //   }
+    //   response.status(201).send(`Group added with ID: ${result.insertId}`)
+    // }
+    // )
+  
+  //   pool.query('INSERT INTO group (student_id) WHERE EXISTS(select 1 from group where group_id ='+groupId+' ) VALUES (SELECT student_id from student WHERE student_id =$1)',
+  //   [student_id3], (error, results) => {
+  //     if (error) {
+  //       throw error
+  //     }
+  //     response.status(201).send(`Group added with ID: ${result.insertId}`)
+  //   }
+  //   )
+  
+  //   pool.query('INSERT INTO group_preference (group_id, choice1, choice2, choice3) VALUES (SELECT group_id from group WHERE group_id =$1),$2,$3,$4',
+  //   [groupId, choice1, choice2, choice3], (error, results) => {
+  //     if (error) {
+  //       throw error
+  //     }
+  //     response.status(201).send(`Group_preference added with ID: ${result.insertId}`)
+  //   }
+  //   )
+   }
+  
+
   module.exports = {
     getAdmins,
     getAdminById,
@@ -139,4 +228,5 @@ const getAdmins = (request, response) => {
     getGroupById,
     getStudents,
     getGroupPref,
+    createGroup
   }
