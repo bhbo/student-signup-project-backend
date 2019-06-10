@@ -102,10 +102,10 @@ const getAdmins = (request, response) => {
   }
   
   const createAdmin = (request, response) => {
-    const { admin_id, password, first_name, last_name } = request.body
+    const { admin_id, admin_password, first_name, last_name } = request.body
   
-    pool.query('INSERT INTO admins (admin_id, password, first_name, last_name) VALUES ($1, $2, $3, $4)', 
-    [admin_id, password, first_name, last_name], (error, results) => {
+    pool.query('INSERT INTO admins (admin_id, admin_password, first_name, last_name) VALUES ($1, $2, $3, $4)', 
+    [admin_id, admin_password, first_name, last_name], (error, results) => {
       if (error) {
         throw error
       }
