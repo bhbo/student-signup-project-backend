@@ -127,15 +127,15 @@ const getAdmins = (request, response) => {
 
   const createGroup = (request, response) => { 
     const {student_id1, student_id2, student_id3, first_name1, first_name2, first_name3, 
-      last_name1, last_name2, last_name3, email1, email2, email3, choice1,choice2,choice3} = request.body
+     email1, email2, email3, choice1,choice2,choice3} = request.body
 
-    const column_name = ["student_id", "first_name", "last_name", "email"] 
+    const column_name = ["student_id", "first_name", "email"] 
 
     for(var i=1;i<=3;i++){
 
-      pool.query('INSERT INTO students (student_id, first_name, last_name, email) VALUES ($1, $2, $3, $4) RETURNING student_id', 
+      pool.query('INSERT INTO students (student_id, first_name, email) VALUES ($1, $2, $3) RETURNING student_id', 
         [request.body[column_name[0].concat(i)], request.body[column_name[1].concat(i)], 
-          request.body[column_name[2].concat(i)],request.body[column_name[3].concat(i)]], (error, results) => {
+          request.body[column_name[2].concat(i)]], (error, results) => {
           if (error) {
             throw error
           }  
