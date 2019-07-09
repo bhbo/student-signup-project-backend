@@ -49,6 +49,8 @@ app.get('/group_pref', db.getGroupPref)
 
 app.post('/group', db.createGroup)
 
+app.get('/getList', db.getList)
+
 app.post('/send_email', function(req, res){
   response = {
     name: req.body.name,

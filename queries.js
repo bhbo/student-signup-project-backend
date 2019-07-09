@@ -89,6 +89,15 @@ const getAdmins = (request, response) => {
       response.status(200).json(results.rows)
     })
   }
+
+  const getList = (request, response) => {
+    pool.query('select gr.group_id, st.student_id, st.first_name, st.email, gr_prf.choice_1, gr_prf.choice_2, gr_prf.choice_3 from public.groups gr left join students st on st.student_id = gr.student_id left join group_preference gr_prf on gr_prf.group_id = gr.group_id::varchar(10) order by gr.group_id, st.student_id', (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
+  }
   
   const getAdminById = (request, response) => {
     const id = request.params.id
@@ -228,5 +237,7 @@ const getAdmins = (request, response) => {
     getGroupById,
     getStudents,
     getGroupPref,
-    createGroup
+    createGroup,
+
+    getList
   }
