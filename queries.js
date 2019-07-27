@@ -91,13 +91,13 @@ const getAdmins = (request, response) => {
   }
 
   const getList = (request, response) => {
-    pool.query('select gr.group_id, st.student_id, st.first_name, st.email, pj1.title, pj2.title, pj3.title, gr_prf.choice_2, gr_prf.choice_3 \
+    pool.query('select gr.group_id, st.student_id, st.first_name, st.email, pj1.title as choice1, pj2.title as choice2, pj3.title as choice3 \
     from public.groups gr \
     left join students st on st.student_id = gr.student_id \
     left join group_preference gr_prf on gr_prf.group_id = gr.group_id::varchar(10) \
-    left join projects pj1 on pj1.project_id::varchar(10) = gr_prf.choice_1 \
-    left join projects pj2 on pj2.project_id::varchar(10) = gr_prf.choice_2 \
-    left join projects pj3 on pj3.project_id::varchar(10) = gr_prf.choice_3 \
+    left join projects pj1 on pj1.project_id::varchar(10) = gr_prf.choice_1\
+    left join projects pj2 on pj2.project_id::varchar(10) = gr_prf.choice_2\
+    left join projects pj3 on pj3.project_id::varchar(10) = gr_prf.choice_3\
     order by gr.group_id, st.student_id', (error, results) => {
       if (error) {
         throw error
