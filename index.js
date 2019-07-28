@@ -38,6 +38,7 @@ app.delete('/admins/:id', db.deleteAdmin)
 app.get('/projects', db.getProjects)
 app.get('/projects/:id', db.getProjectById)
 app.post('/projects', db.createProject)
+app.post('/projects/:id', db.deleteProject)
 
 
 app.get('/groups', db.getGroups)
